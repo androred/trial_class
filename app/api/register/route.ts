@@ -13,7 +13,25 @@ export async function POST(request: Request) {
   if (!emailPattern.test(String(data.email))) return NextResponse.json({ error: 'Format email belum sesuai.' }, { status: 400 });
   if (!['Online', 'Offline'].includes(String(data.attendanceMode))) return NextResponse.json({ error: 'Pilih mode kehadiran online atau offline.' }, { status: 400 });
   if (data.consent !== 'on' && data.consent !== true) return NextResponse.json({ error: 'Persetujuan kebijakan privasi diperlukan.' }, { status: 400 });
-  // Google Sheets and Calendar credentials will be wired here through server-side environment variables.
-  // Never report a registration as successful until the durable store and calendar invite are available.
-  return NextResponse.json({ error: 'Pendaftaran online belum diaktifkan. Silakan hubungi tim Haltev melalui WhatsApp untuk mengamankan kursi.' }, { status: 503 });
+
+  const endpoint = process.env.APPS_SCRIPT_URL;
+  const token = process.env.APPS_SCRIPT_TOKEN;
+  if (!endpoint || !token) return NextResponse.json({ error: 'Pendaftaran online belum dikonfigurasi.' }, { status: 503 });
+
+  try {
+    const upstream = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...data, token }),
+      cache: 'no-store',
+      redirect: 'follow',
+    });
+    const result = await upstream.json();
+    if (!upstream.ok || !result.ok) {
+      return NextResponse.json({ error: result.error || 'Pendaftaran belum berhasil. Silakan coba lagi.' }, { status: 502 });
+    }
+    return NextResponse.json({ ok: true, registrationId: result.registrationId, eventId: result.eventId, meetLink: result.meetLink || '' });
+  } catch {
+    return NextResponse.json({ error: 'Layanan pendaftaran sedang tidak dapat dihubungi. Coba lagi beberapa saat.' }, { status: 502 });
+  }
 }

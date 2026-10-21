@@ -9,16 +9,7 @@ const courses = [
   { id: 'mobile-development', name: 'Mobile Development', icon: '▣', tagline: 'Kenali cara aplikasi Android dibuat.', material: 'Jalankan aplikasi Android sederhana di emulator atau HP.', fit: 'Untuk pemula yang ingin jadi mobile developer.', tutor: 'Tutor Haltev' },
 ];
 
-const weekdayDates = ['2026-10-26', '2026-11-02', '2026-11-09', '2026-11-16'];
-const classTimes = [
-  { course: 'digital-marketing', time: '10:00' },
-  { course: 'data-science', time: '11:00' },
-  { course: 'web-development', time: '13:00' },
-  { course: 'mobile-development', time: '14:00' },
-];
-const slots = weekdayDates.flatMap((date) => classTimes.map(({ course, time }) => ({
-  id: `${course}-${date}`, course, date, time, mode: 'Hybrid', tutor: 'Tutor Haltev', seats: 5,
-})));
+type TrialSlot = { id: string; course: string; date: string; time: string; endTime: string; tutor: string; seats: number; mode: string };
 
 const salesPeople = [
   { code: 'rusyati', name: 'Rusyati Fitriyani Rustam' },
@@ -33,17 +24,31 @@ export default function TrialApp() {
   const [attendanceMode, setAttendanceMode] = useState('');
   const [course, setCourse] = useState('');
   const [slot, setSlot] = useState('');
+  const [slots, setSlots] = useState<TrialSlot[]>([]);
+  const [slotsLoading, setSlotsLoading] = useState(true);
+  const [slotsError, setSlotsError] = useState('');
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const selectedCourse = courses.find((item) => item.id === course);
   const selectedSlot = slots.find((item) => item.id === slot);
-  const availableSlots = useMemo(() => slots.filter((item) => item.course === course && item.seats > 0), [course]);
+  const availableSlots = useMemo(() => slots.filter((item) => item.course === course && item.seats > 0), [course, slots]);
 
   useEffect(() => {
+    let cancelled = false;
+    fetch('/api/slots', { cache: 'no-store' })
+      .then(async (response) => {
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Jadwal belum dapat dimuat.');
+        return result;
+      })
+      .then((result) => { if (!cancelled) setSlots(result.slots || []); })
+      .catch((error) => { if (!cancelled) setSlotsError(error instanceof Error ? error.message : 'Jadwal belum dapat dimuat.'); })
+      .finally(() => { if (!cancelled) setSlotsLoading(false); });
     const code = new URLSearchParams(window.location.search).get('sales')?.toLowerCase() || '';
     setSalesCode(code);
     setSales(salesPeople.find((person) => person.code === code)?.name || '');
+    return () => { cancelled = true; };
   }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -68,7 +73,7 @@ export default function TrialApp() {
         <div className="section-heading"><div><div className="step-label">01 <span>— PILIH KELAS</span></div><h2>Mulai dari yang bikin penasaran.</h2><p>Pilih satu kelas untuk pengalaman trial-mu.</p></div><div className="step-count"><span>LANGKAH</span><b>01 <i>/</i> 03</b></div></div>
         <div className="course-grid">{courses.map((item, index) => <button className={`course-card ${course === item.id ? 'selected' : ''}`} key={item.id} onClick={() => { setCourse(item.id); setSlot(''); }}><span className="card-top"><span className="course-icon">{item.icon}</span><span className="card-number">0{index + 1}</span></span><h3>{item.name}</h3><p className="tagline">{item.tagline}</p><div className="card-detail"><b>DI SESI TRIAL</b><p>{item.material}</p></div><span className="card-footer"><span>{item.tutor}</span><span className="choose-circle">{course === item.id ? '✓' : '↗'}</span></span></button>)}</div>
         <div className="info-strip"><span className="info-icon">i</span><p><b>Gak perlu punya basic IT.</b> Cukup bawa rasa ingin tahu dan laptopmu.</p><span className="strip-divider"/><span className="strip-small">Pilihan online & offline di Bekasi</span></div>
-        {course && <section className="booking" id="booking"><div className="booking-heading"><div><div className="step-label">02 <span>— PILIH JADWAL</span></div><h2>Temukan waktu yang pas.</h2><p>Semua waktu dalam WIB · Pendaftaran tutup 3 jam sebelum kelas.</p></div><div className="step-count"><span>LANGKAH</span><b>02 <i>/</i> 03</b></div></div><p className="demo-note">Jadwal weekday sementara: setiap Senin mulai 26 Oktober 2026. Jadwal weekend akan ditambahkan setelah hari dan jamnya disepakati. Mode online atau offline dipilih saat mendaftar.</p><div className="slot-list">{availableSlots.map((item) => <button className={`slot-card ${slot === item.id ? 'slot-selected' : ''}`} key={item.id} onClick={() => { setSlot(item.id); setAttendanceMode(''); }}><span className="slot-date">{dateLabel(item.date)}</span><strong>{item.time}</strong><span className="slot-mode"><i className="online"/>Online atau Offline · pilih saat mendaftar</span><span className="slot-tutor">{item.tutor}</span><span className="slot-seats">{item.seats} kursi · kuota awal</span><span className="radio-dot"/></button>)}<div className="slot-note">Jadwal lain belum tersedia? <a href="https://wa.me/6287800092728">Hubungi tim kami ↗</a></div></div></section>}
+        {course && <section className="booking" id="booking"><div className="booking-heading"><div><div className="step-label">02 <span>— PILIH JADWAL</span></div><h2>Temukan waktu yang pas.</h2><p>Semua waktu dalam WIB · Pendaftaran tutup 3 jam sebelum kelas.</p></div><div className="step-count"><span>LANGKAH</span><b>02 <i>/</i> 03</b></div></div>{slotsLoading ? <p className="slot-note">Memuat jadwal…</p> : slotsError ? <p className="error" role="alert">{slotsError}</p> : availableSlots.length ? <div className="slot-list">{availableSlots.map((item) => <button className={`slot-card ${slot === item.id ? 'slot-selected' : ''}`} key={item.id} onClick={() => { setSlot(item.id); setAttendanceMode(''); }}><span className="slot-date">{dateLabel(item.date)}</span><strong>{item.time}</strong><span className="slot-mode"><i className="online"/>Online atau Offline · pilih saat mendaftar</span><span className="slot-tutor">{item.tutor}</span><span className="slot-seats">{item.seats} kursi tersedia</span><span className="radio-dot"/></button>)}<div className="slot-note">Jadwal lain belum tersedia? <a href="https://wa.me/6287800092728">Hubungi tim kami ↗</a></div></div> : <p className="slot-note">Belum ada jadwal tersedia untuk kelas ini. Silakan hubungi tim kami melalui <a href="https://wa.me/6287800092728">WhatsApp ↗</a>.</p>}</section>}
         {course && slot && <section className="form-section"><div className="booking-heading"><div><div className="step-label">03 <span>— DATA DIRI</span></div><h2>Satu langkah kecil lagi.</h2><p>Isi data ini agar tutor bisa menyiapkan sesi yang relevan.</p></div><div className="step-count"><span>LANGKAH</span><b>03 <i>/</i> 03</b></div></div><form onSubmit={submit}><div className="form-grid"><label>Nama lengkap<input name="name" required placeholder="Nama yang biasa dipakai" autoComplete="name"/></label><label>Nomor WhatsApp<input name="phone" type="tel" required placeholder="08xxxxxxxxxx" autoComplete="tel"/></label><label className="full">Email untuk undangan kalender<input name="email" type="email" required placeholder="nama@email.com" autoComplete="email"/></label><label>Mode kehadiran<select name="attendanceMode" required value={attendanceMode} onChange={(event) => setAttendanceMode(event.target.value)}><option value="" disabled>Pilih online atau offline</option><option value="Online">Online · Google Meet</option><option value="Offline">Offline · Grand Galaxy City</option></select></label><label>Status saat ini<select name="status" required defaultValue=""><option value="" disabled>Pilih status</option><option>Pelajar / Mahasiswa</option><option>Fresh graduate</option><option>Karyawan</option><option>Wirausaha</option><option>Lainnya</option></select></label><label>Punya latar belakang IT?<select name="itBackground" required defaultValue=""><option value="" disabled>Pilih jawaban</option><option>Ya</option><option>Tidak</option></select></label><label>Tujuan belajar<select name="goal" required defaultValue=""><option value="" disabled>Pilih tujuan</option><option>Cari kerja</option><option>Pindah karier</option><option>Upskill</option><option>Mengembangkan bisnis</option></select></label><label>Nama sales<select name="sales" value={sales} onChange={(event) => { const person = salesPeople.find((entry) => entry.name === event.target.value); setSales(event.target.value); setSalesCode(person?.code || ''); }}><option value="">Pilih nama sales (opsional)</option>{salesPeople.map((person) => <option key={person.code} value={person.name}>{person.name}</option>)}</select><input type="hidden" name="salesCode" value={salesCode}/></label><label className="full">Apa yang masih bikin kamu ragu ikut kelas penuh? <span className="optional">OPSIONAL</span><textarea name="hesitation" rows={3} placeholder="Ceritakan sedikit (opsional)"/></label></div><label className="consent"><input type="checkbox" name="consent" required/><span>Saya menyetujui <a href="/privacy" target="_blank">kebijakan privasi</a> dan penggunaan data saya untuk keperluan trial class serta tindak lanjut dari Haltev.</span></label><div className="form-bottom"><p>Dengan mendaftar, kamu tidak dikenakan biaya apa pun.</p><button className="submit-button" type="submit" disabled={loading}>{loading ? 'Mengirim…' : 'Amankan kursiku'} <span>↗</span></button></div>{error && <p role="alert" className="error">{error}</p>}</form></section>}
       </> : <section className="success"><div className="success-check">✓</div><div className="eyebrow">PENDAFTARAN BERHASIL</div><h2>Kursimu sudah diamankan.</h2><p>Undangan kalender untuk <b>{selectedCourse?.name}</b> pada <b>{selectedSlot ? `${dateLabel(selectedSlot.date)}, pukul ${selectedSlot.time} WIB` : ''}</b> akan dikirim ke emailmu.</p><div className="success-details"><span>👋 Tutor</span><b>{selectedSlot?.tutor}</b><span>⌖ Lokasi</span><b>{attendanceMode === 'Online' ? 'Link Google Meet ada di undangan kalender' : 'Grand Galaxy City, Bekasi Selatan'}</b></div><p className="success-small">Cek inbox dan folder spam emailmu untuk undangan kalender. Sampai jumpa di kelas!</p><button className="text-button" onClick={() => { setDone(false); setCourse(''); setSlot(''); setAttendanceMode(''); }}>← Lihat kelas lainnya</button></section>}
       <div className="trust-row"><span>✳ KELAS KECIL, BELAJAR LEBIH PERSONAL</span><span>KURIKULUM BERBASIS AI</span><span>LANGKAH NYATA MENUJU KARIER DIGITAL</span></div>
