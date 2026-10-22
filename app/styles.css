@@ -63,4 +63,15 @@ body{font-size:16.8px}
 .hero h1,.section-heading h2,.booking-heading h2,.course-card h3,.location h3,.success h2,.privacy-page h1{font-family:'Aileron Black',var(--sans);font-weight:900;letter-spacing:-.6px}
 .hero h1{letter-spacing:-1.6px}
 @media(max-width:760px){.brand-logo-horizontal{width:152px;height:38px}}
+@media(max-width:760px){.course-grid{grid-template-columns:1fr}.course-card{min-height:0}}
+
+.hero-points{align-items:center;flex-wrap:wrap}
+.hero-points span{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;line-height:1.4}
+.hero-points i{width:16px;flex:0 0 16px;display:inline-grid;place-items:center;font-style:normal;line-height:1;color:#0878bd}
+
+.course-filters{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:-8px 0 18px}
+.course-filter{border:1px solid #cfe2ed;border-radius:999px;background:#fff;color:#48677d;padding:9px 15px;font:600 13px var(--sans);cursor:pointer;transition:background .18s,border-color .18s,color .18s,box-shadow .18s}
+.course-filter:hover{border-color:#72bdd8;color:#0878bd}
+.course-filter.active{border-color:#0878bd;background:linear-gradient(110deg,#0878bd,#00aeca);color:#fff;box-shadow:0 5px 14px #0878bd26}
+@media(max-width:760px){.course-filters{gap:7px;margin:-4px 0 15px}.course-filter{padding:8px 12px}}
 
