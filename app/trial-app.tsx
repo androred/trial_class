@@ -36,19 +36,45 @@ export default function TrialApp() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch('/api/slots', { cache: 'no-store' })
-      .then(async (response) => {
+    let inFlight = false;
+    let firstLoad = true;
+    const loadSlots = async () => {
+      if (inFlight) return;
+      inFlight = true;
+      try {
+        const response = await fetch('/api/slots', { cache: 'no-store' });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || 'Jadwal belum dapat dimuat.');
-        return result;
-      })
-      .then((result) => { if (!cancelled) setSlots(result.slots || []); })
-      .catch((error) => { if (!cancelled) setSlotsError(error instanceof Error ? error.message : 'Jadwal belum dapat dimuat.'); })
-      .finally(() => { if (!cancelled) setSlotsLoading(false); });
+        if (!cancelled) {
+          setSlots(result.slots || []);
+          setSlotsError('');
+        }
+      } catch (error) {
+        if (!cancelled && firstLoad) setSlotsError(error instanceof Error ? error.message : 'Jadwal belum dapat dimuat.');
+      } finally {
+        inFlight = false;
+        if (firstLoad) {
+          firstLoad = false;
+          if (!cancelled) setSlotsLoading(false);
+        }
+      }
+    };
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') void loadSlots();
+    };
+    void loadSlots();
+    window.addEventListener('focus', refreshWhenVisible);
+    document.addEventListener('visibilitychange', refreshWhenVisible);
+    const refreshTimer = window.setInterval(refreshWhenVisible, 60_000);
     const code = new URLSearchParams(window.location.search).get('sales')?.toLowerCase() || '';
     setSalesCode(code);
     setSales(salesPeople.find((person) => person.code === code)?.name || '');
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      window.clearInterval(refreshTimer);
+      window.removeEventListener('focus', refreshWhenVisible);
+      document.removeEventListener('visibilitychange', refreshWhenVisible);
+    };
   }, []);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -59,6 +85,7 @@ export default function TrialApp() {
       const response = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...payload, course, slot }) });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || 'Pendaftaran belum berhasil. Coba lagi.');
+      setSlots((current) => current.map((item) => item.id === String(slot) ? { ...item, seats: Math.max(0, item.seats - 1) } : item));
       setAttendanceMode(String(payload.attendanceMode || ''));
       setDone(true);
     } catch (e) { setError(e instanceof Error ? e.message : 'Terjadi kendala. Coba lagi.'); }
