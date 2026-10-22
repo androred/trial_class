@@ -54,3 +54,13 @@ body{font-size:16px}
 .success-small{font-size:13px!important}
 @media(max-width:760px){.help-link{font-size:12px}.hero-points{font-size:11px}.step-count{font-size:9px}.tagline,.card-detail p{font-size:12px}.trust-row{font-size:9px}footer>span{font-size:11px}.form-grid label{font-size:13px}}
 
+.map-art>img{width:58px;height:58px;object-fit:contain;filter:drop-shadow(0 5px 10px #0878bd30)}
+.map-art .map-pin{position:absolute;right:18px;top:14px;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#fff;color:#0878bd;font-size:20px;box-shadow:0 3px 12px #0878bd22}
+
+@font-face{font-family:'Aileron Black';src:url('/Aileron-Black.otf') format('opentype');font-style:normal;font-weight:900;font-display:swap}
+.brand{font-family:'Aileron Black',var(--sans);font-weight:900;letter-spacing:-.5px}
+.brand-logo-horizontal{width:176px;height:44px;object-fit:contain}
+.hero h1,.section-heading h2,.booking-heading h2,.course-card h3,.location h3,.success h2,.privacy-page h1{font-family:'Aileron Black',var(--sans);font-weight:900;letter-spacing:-.6px}
+.hero h1{letter-spacing:-1.6px}
+@media(max-width:760px){.brand-logo-horizontal{width:152px;height:38px}}
+
