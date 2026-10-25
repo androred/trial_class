@@ -75,3 +75,112 @@ body{font-size:16.8px}
 .course-filter.active{border-color:#0878bd;background:linear-gradient(110deg,#0878bd,#00aeca);color:#fff;box-shadow:0 5px 14px #0878bd26}
 @media(max-width:760px){.course-filters{gap:7px;margin:-4px 0 15px}.course-filter{padding:8px 12px}}
 
+/* Promo page refinement: Haltev blue-cyan editorial direction */
+:root{--ink:#102b45;--muted:#5c7185;--green:#0878bd;--green2:#d9f4fb;--orange:#00bfd8;--paper:#f7fbff;--line:#dcebf3}
+html{scroll-padding-top:24px}
+body{background:#f7fbff;color:#102b45}
+.topbar{height:88px;max-width:1440px;margin:0 auto;padding:0 max(calc((100vw - 1200px)/2),6vw);border:0;position:relative;z-index:3}
+.brand-logo-horizontal{width:188px;height:48px}
+.help-link{padding:12px 17px;border:1px solid #d3e9f3;border-radius:999px;background:#ffffffc7;font-size:13px;transition:border-color .2s,background .2s}
+.help-link:hover{border-color:#86cde3;background:#fff}
+.hero{min-height:510px;margin:0 20px;padding:68px max(calc((100vw - 1120px)/2),6vw) 65px;border-radius:22px 22px 48px 48px;background:linear-gradient(118deg,#edfaff 0%,#e4f7ff 52%,#d9f4ff 100%);box-shadow:0 24px 65px #0c6a9910}
+.hero:after{opacity:.17;background-size:42px 42px;mask-image:linear-gradient(90deg,transparent 5%,#000 100%)}
+.hero-copy{width:55%;max-width:590px;align-self:center;padding:0 0 5px}
+.eyebrow{color:#0878bd;letter-spacing:1.4px}
+.hero h1{font-size:clamp(54px,6.4vw,82px);line-height:1.03;letter-spacing:-1.8px;margin:23px 0 17px;color:#102b45}
+.hero h1 em{color:#0878bd}
+.hero-copy>p{max-width:495px;color:#526d82;font-size:16px;line-height:1.8}
+.hero-cta{display:inline-flex;align-items:center;gap:22px;margin-top:23px;padding:14px 19px;border-radius:999px;background:linear-gradient(110deg,#0878bd,#00abc8);color:white;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 10px 23px #0878bd30;transition:transform .2s,box-shadow .2s}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 14px 29px #0878bd3b}
+.hero-cta span{font-size:18px;line-height:1}
+.hero-points{gap:18px 23px;margin-top:24px;color:#41637c;font-size:12px}
+.hero-points i{color:#0786c2}
+.hero-art{top:50px;right:max(calc((100vw - 1120px)/2),6vw);width:410px;height:415px;border-radius:220px 220px 24px 24px;background:linear-gradient(160deg,#c9f1fd 0%,#9ee5f7 58%,#7bd3ed 100%);box-shadow:0 25px 54px #0878bd20;overflow:hidden;isolation:isolate}
+.hero-art:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,#ffffffa6 0%,transparent 54%),linear-gradient(180deg,transparent 62%,#28a9d522 100%);z-index:-1}
+.sun{width:260px;height:260px;right:72px;top:44px;background:radial-gradient(circle at 35% 35%,#fff 0,#d8f8ff 54%,#a8e8f8 100%);box-shadow:0 0 52px #fff9}
+.orbit-a{width:350px;height:158px;top:118px;right:14px;border-color:#0878bd38}
+.orbit-b{width:320px;height:225px;top:88px;right:23px;border-color:#0878bd30}
+.orb-one{top:66px;right:272px}.orb-two{right:35px;top:290px}
+.art-card{top:112px;right:108px;width:205px;height:190px;border-radius:16px;background:#ffffffed;border-color:#ffffff;box-shadow:0 20px 42px #135d7d24}
+.art-note{color:#285c78}.note-left{top:67px;left:28px}.note-right{bottom:50px;right:31px}
+.brand-ribbon{max-width:1120px;min-height:70px;margin:0 auto;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:14px;border-bottom:1px solid #dcebf3;color:#3b6782;font:500 10px var(--mono);letter-spacing:1.15px}
+.brand-ribbon i{font-style:normal;color:#00aeca;font-size:15px}
+.content{max-width:1120px;padding:73px 0 48px}
+.section-heading,.booking-heading{margin-bottom:26px}
+.section-heading h2,.booking-heading h2{color:#102b45;font-size:clamp(29px,3.2vw,36px);letter-spacing:-.8px}
+.section-heading p,.booking-heading p{color:#60788b;font-size:14px}
+.step-label{color:#6d8799}.step-label span{color:#0878bd}
+.course-filters{margin:0 0 20px}
+.course-filter{padding:10px 17px;border-color:#d4e7f0;background:#fff;color:#48677d;box-shadow:0 3px 12px #17496708}
+.course-filter.active{background:linear-gradient(110deg,#0878bd,#00abc8);border-color:transparent;color:#fff}
+.course-grid{gap:16px}
+.course-card{min-height:290px;padding:22px 21px 17px;border:1px solid #dcebf3;border-radius:18px;background:linear-gradient(155deg,#fff 0%,#fcfeff 100%);box-shadow:0 8px 23px #163d5710;transition:transform .24s,border-color .24s,box-shadow .24s}
+.course-card:hover{transform:translateY(-5px);border-color:#8ad3e7;box-shadow:0 18px 35px #0878bd18}
+.course-card.selected{border-color:#078fc5;background:linear-gradient(155deg,#fff 0%,#f0fbff 100%);box-shadow:0 0 0 3px #0ab5d91a,0 15px 30px #0878bd13}
+.course-icon{width:44px;height:44px;border-radius:14px;background:linear-gradient(140deg,#e2f7ff,#c8eff9);color:#0878bd}
+.course-card h3{color:#153c58;margin-top:21px}
+.tagline{color:#647d90}
+.card-detail{border-color:#e4eef4}.card-detail>b{color:#0878bd;letter-spacing:1.15px}.card-detail p{color:#48677c;line-height:1.65}
+.card-footer{border-color:#e4eef4;color:#637d90}.choose-circle{width:28px;height:28px;border-color:#c6e1ed;color:#0878bd}
+.info-strip{margin-top:19px;padding:15px 19px;border-radius:12px;background:linear-gradient(100deg,#eaf9ff,#f5fcff);border-color:#d8edf5}
+.info-strip p{color:#587387}.info-strip p b{color:#183f5a}.info-icon{width:24px;height:24px;border-color:#90d4e5;color:#0878bd}
+.booking,.form-section{margin-top:62px;padding:38px;border:1px solid #dcebf3;border-radius:24px;background:linear-gradient(145deg,#f1faff,#fff 55%);box-shadow:0 12px 34px #143e5709;scroll-margin-top:25px}
+.slot-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.slot-card{padding:19px;border-color:#d9e9f1;border-radius:14px;box-shadow:0 5px 15px #143e5708;transition:transform .2s,border-color .2s,box-shadow .2s}
+.slot-card:hover{transform:translateY(-2px);border-color:#82cde2;box-shadow:0 11px 22px #0878bd12}
+.slot-selected{border-color:#078fc5;box-shadow:inset 0 0 0 1px #078fc5,0 10px 22px #0878bd14}
+.slot-card strong{color:#0878bd}.slot-mode,.slot-tutor{color:#5b7488}.slot-seats{color:#0878bd}
+.form-grid{gap:19px}.form-grid label{color:#294b64}.form-grid input,.form-grid select,.form-grid textarea{padding:13px 14px;border:1px solid #d5e5ee;border-radius:9px;background:#fff;color:#102b45}
+.form-grid input:focus,.form-grid select:focus,.form-grid textarea:focus{border-color:#139bc8;box-shadow:0 0 0 4px #12b5d91a}
+.consent{color:#5b7488}.form-bottom p{color:#71899a}
+.submit-button{padding:15px 22px;border-radius:999px;background:linear-gradient(110deg,#0878bd,#00aeca);box-shadow:0 9px 20px #0878bd25;transition:transform .2s,box-shadow .2s}
+.submit-button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 13px 26px #0878bd35}
+.trust-row{margin-top:72px;padding:19px 0;color:#527a93;border-color:#dcebf3;letter-spacing:1px}
+.location{margin-top:45px;padding:30px;gap:42px;border:1px solid #d8eaf3;border-radius:22px;background:linear-gradient(110deg,#f0fbff,#fff);box-shadow:0 12px 32px #1456770c}
+.location h3{color:#153c58}.location p{color:#60788b;line-height:1.75}
+.map-art{height:235px;border-radius:150px 150px 16px 16px;background-color:#ddf4fb;box-shadow:inset 0 0 0 1px #c6e8f3}
+.success{border-radius:24px;box-shadow:0 15px 40px #143e5710}.success-details{border-radius:12px;background:#f0faff}
+footer{max-width:1120px;height:88px;border-color:#dcebf3;color:#71899a}
+footer .brand-logo-horizontal{width:160px;height:42px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #00aeca;outline-offset:3px}
+@keyframes haltev-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes haltev-art-in{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+.hero-copy{animation:haltev-rise .65s ease-out both}.hero-art{animation:haltev-art-in .8s .08s ease-out both}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media(max-width:1160px){.brand-ribbon,.content,footer{margin-left:6vw;margin-right:6vw}}
+@media(max-width:760px){
+  .topbar{height:74px;padding:0 20px}
+  .brand-logo-horizontal{width:160px;height:42px}
+  .help-link{padding:9px 12px;font-size:12px}
+  .hero{margin:0 10px;min-height:unset;padding:44px 23px 24px;border-radius:18px 18px 30px 30px}
+  .hero-copy{width:100%;max-width:unset;padding:0}
+  .hero h1{font-size:clamp(45px,12vw,60px);margin:19px 0 14px;letter-spacing:-1.2px}
+  .hero-copy>p{font-size:14px;line-height:1.75;max-width:420px}
+  .hero-cta{margin-top:18px;padding:12px 16px;font-size:13px}
+  .hero-points{gap:10px 17px;margin-top:18px;font-size:11px}
+  .hero-art{position:relative;top:auto;right:auto;width:min(100%,390px);height:300px;margin:28px auto 0;border-radius:200px 200px 18px 18px;opacity:1;transform:none}
+  .sun{width:220px;height:220px;right:calc(50% - 110px);top:25px}
+  .orbit-a{width:300px;height:130px;top:91px;right:calc(50% - 150px)}
+  .orbit-b{width:280px;height:190px;top:68px;right:calc(50% - 140px)}
+  .art-card{top:76px;right:calc(50% - 90px);width:180px;height:170px;padding:17px}
+  .note-left{top:42px;left:calc(50% - 170px)}.note-right{bottom:28px;right:calc(50% - 160px)}
+  .brand-ribbon{min-height:unset;margin:0 20px;padding:17px 0;justify-content:center;gap:9px 13px;font-size:9px;flex-wrap:wrap;text-align:center}
+  .brand-ribbon i{font-size:12px}
+  .content{padding:48px 20px 30px}
+  .section-heading,.booking-heading{gap:14px;margin-bottom:21px}
+  .section-heading h2,.booking-heading h2{font-size:27px;max-width:320px}
+  .step-count{flex:none}
+  .course-grid{grid-template-columns:1fr;gap:12px}
+  .course-card{min-height:unset;padding:19px;border-radius:16px}
+  .course-card h3{margin-top:16px}
+  .card-detail{flex:auto}
+  .booking,.form-section{margin-top:43px;padding:23px 18px;border-radius:20px}
+  .slot-list{grid-template-columns:1fr}
+  .trust-row{justify-content:center;text-align:center;gap:12px 20px;margin-top:48px;font-size:9px}
+  .location{margin-top:29px;padding:22px 18px;border-radius:18px;gap:18px}
+  .map-art{height:205px}
+  footer{height:auto;min-height:80px;padding:19px 0;gap:12px}
+  footer .brand-logo-horizontal{width:145px;height:38px}
+  footer>span{font-size:11px}
+}
+
