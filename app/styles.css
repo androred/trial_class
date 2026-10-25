@@ -198,4 +198,5 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .hero-art{position:absolute;top:160px;right:-80px;width:390px;height:350px;margin:0;opacity:.26;transform:scale(.8);transform-origin:top right}
   .map-art{height:145px}
 }
+.brand-ribbon{font-size:20px}
 
